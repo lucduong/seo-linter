@@ -7,6 +7,7 @@ install:
   - npm install
 
 script:
+  - rm .babelrc # using babel in package.json
   - npm run cover
 
 # Send coverage data to Coveralls

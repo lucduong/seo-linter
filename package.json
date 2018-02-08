@@ -45,5 +45,40 @@
     "uglifyjs-webpack-plugin": "^1.1.8",
     "webpack": "^3.10.0",
     "webpack-bundle-analyzer": "^2.10.0"
+  },
+  "babel": {
+    "presets": [
+      [
+        "env",
+        {
+          "targets": {
+            "node": "current",
+            "browsers": ["last 2 Chrome versions"]
+          },
+          "exclude": ["transform-async-to-generator"]
+        }
+      ],
+      "es2015",
+      "stage-0"
+    ],
+    "plugins": [
+      "transform-object-rest-spread",
+      [
+        "transform-runtime",
+        {
+          "helpers": false,
+          "polyfill": false,
+          "regenerator": true,
+          "moduleName": "babel-runtime"
+        }
+      ]
+    ],
+    "retainLines": true,
+    "comments": false,
+    "env": {
+      "test": {
+        "plugins": ["istanbul"]
+      }
+    }
   }
 }
