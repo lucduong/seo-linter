@@ -1,0 +1,54 @@
+#!/usr/bin/env node
+process.on('unhandledRejection', r => console.log(r));
+
+const program = require('commander');
+const figlet = require('figlet');
+const chalk = require('chalk');
+const CLI = require('clui');
+
+const { SEOLinter, loadYamlConfig } = require('../lib/index');
+
+console.log(
+  chalk.blue(
+    figlet.textSync('SEO LINT', {
+      horizontalLayout: 'full'
+    })
+  )
+);
+
+program
+  .version('0.1.0', '-v, --version')
+  .description('SEOLint - linting your html')
+  .usage('<command> [options]')
+  .option('-c, --config <file>', 'Configuration file')
+  .option('-o, --output <file>', 'Output file')
+  .option('-f, --file <file>', 'HTML file')
+  .option('-u, --uri <string>', 'URI - Ex: https://google.com')
+  .option('-h, --html <string>', 'HTML String')
+  .parse(process.argv);
+
+const config = program.config;
+const output = program.output;
+const file = program.file;
+const uri = program.uri;
+const html = program.html;
+
+if (!config)
+  throw new Error('Please provide configuration file which has rules config');
+
+loadYamlConfig(config)
+  .then(function(cfg) {
+    const seo = new SEOLinter(cfg);
+    let options = {};
+    if (uri) options.uri = uri;
+    if (html) options.html = html;
+    if (file) options.file = file;
+    if (output) {
+      if (output === 'console') options.output = { type: 'console', silence: false };
+      else options.output = { type: 'file', path: output };
+    }
+    seo.lint(options);
+  })
+  .catch(function(error) {
+    console.error(error);
+  });

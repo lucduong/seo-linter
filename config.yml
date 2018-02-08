@@ -1,0 +1,25 @@
+rules:
+  strong:
+    max: 15
+  h1:
+    max: 1
+  img:
+    required: true
+    attrs:
+      alt:
+        required: true
+  a:
+    required: true
+  head:
+    required: true
+    childs:
+      - title:
+          required: true
+      - meta:
+          attrs:
+            name:
+              value: 'description'
+      - meta:
+          attrs:
+            name:
+              value: 'keywords'
