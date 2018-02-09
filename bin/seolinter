@@ -10,7 +10,7 @@ const { SEOLinter, loadYamlConfig } = require('../lib/index');
 
 console.log(
   chalk.blue(
-    figlet.textSync('SEO LINT', {
+    figlet.textSync('SEO LINTER', {
       horizontalLayout: 'full'
     })
   )

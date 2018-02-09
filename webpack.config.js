@@ -57,7 +57,8 @@ module.exports = {
       'js-yaml',
       'lodash',
       'request',
-      'request-promise'
+      'request-promise',
+      'regenerator-runtime'
     ]
   },
 
