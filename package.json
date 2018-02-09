@@ -1,6 +1,6 @@
 {
   "name": "seo-linter",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "SEO Linter - The package for linting your HTML file with Google SEO",
   "main": "lib/index.js",
   "repository": "git@github.com:lucduong/seo-linter.git",
