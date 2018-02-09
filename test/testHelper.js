@@ -41,6 +41,14 @@ describe('# Helper', () => {
           })
           .catch(err => done(err));
       });
+
+      it('Should throw error if not providing filename', done => {
+        loadFile()
+          .then($ => {
+            done(new Error('Not providing `filename` but still loading file'));
+          })
+          .catch(err => done());
+      });
     });
 
     describe('### loadUrl', () => {
@@ -58,6 +66,18 @@ describe('# Helper', () => {
             done();
           })
           .catch(err => done(err));
+      });
+
+      it('Should throw error if provide url without startsWith http:// or https://', done => {
+        loadUrl('ltv.vn')
+          .then(() => {
+            done(
+              new Error(
+                'Provided url without starting with http:// or https:// but still loading'
+              )
+            );
+          })
+          .catch(() => done());
       });
     });
 
@@ -129,6 +149,7 @@ describe('# Helper', () => {
           new Error('Not providing `tagName` but still creating new instance.')
         );
       } catch (err) {
+        // console.log(err);
         done();
       }
     });
@@ -142,6 +163,23 @@ describe('# Helper', () => {
       } catch (err) {
         done();
       }
+    });
+
+    it('Should create instance correctly if provide invalid param (Need to set default)', done => {
+      const rule = new TagRule(tagName, {
+        max: null,
+        min: null,
+        attrs: null,
+        childs: null
+      });
+
+      const { max, min, attrs, childs } = rule;
+      expect(rule).to.not.empty;
+      expect(max).to.eq(-1);
+      expect(min).to.eq(0);
+      expect(attrs).to.be.empty;
+      expect(childs).to.be.empty;
+      done();
     });
   });
 });

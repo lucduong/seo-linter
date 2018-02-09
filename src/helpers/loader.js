@@ -42,7 +42,9 @@ exports.loadYamlConfig = (filename, config) => {
  */
 exports.loadUrl = url => {
   if (!url.startsWith('http://') && !url.startsWith('https://')) {
-    return false;
+    return Promise.reject(
+      new Error('URL must be start with either http:// or https://')
+    );
   }
   const uri = url.toLowerCase();
   const options = {

@@ -4,10 +4,15 @@ rules:
   h1:
     max: 1
   img:
-    required: true
-    attrs:
-      alt:
-        required: true
+    -
+      required: true
+      attrs:
+        alt:
+          required: true
+    -
+      attrs:
+        src:
+          required: true
   a:
     required: true
   head:
@@ -19,7 +24,9 @@ rules:
           attrs:
             name:
               value: 'description'
+              min: 1
       - meta:
           attrs:
             name:
               value: 'keywords'
+              min: 1

@@ -34,7 +34,7 @@ class SEOLinter {
         ? this.createTagRules(tagName, rule)
         : [this.createTagRule(tagName, rule)];
 
-      if (this.rulesMap[tagName]) {
+      if (this.rulesMap.hasOwnProperty(tagName)) {
         this.rulesMap[tagName]['rules'] = [
           ...this.rulesMap[tagName]['rules'],
           ...tagRules
@@ -167,11 +167,11 @@ class SEOLinter {
     // Recursive with childs element
     if (rule.childs.length > 0) {
       errors = rule.childs.reduce(
-        (_errs, rule) =>
+        (_errs, r) =>
           _errs.concat(
             this.validateRule(
               {
-                rule: this.createTagRule(null, rule, 'head'),
+                rule: this.createTagRule(null, r, rule.tagName),
                 $
               },
               errors
@@ -248,20 +248,30 @@ class SEOLinter {
 
       if (attr.value) {
         const notMatched = elmLen - matched;
-        if (
-          notMatched > 0 &&
-          notMatched < elmLen &&
-          matched < (attr.min || 0)
-        ) {
-          let errMsg = `At least ${attr.min} <${
+        if (notMatched > 0 && notMatched < elmLen && !attr.min) {
+          let errMsg = `There are ${elmLen} <${
             rule.tagName
-          }> tags must have attribute [${attrNm}='${
+          }> tags but there are ${notMatched} tags have no attribute [${attrNm}='${
             attr.value
-          }']. Need more ${attr.min - matched} <${rule.tagName} ${attrNm}='${
-            attr.value
-          }'> tags.`;
+          }'].`;
           attrErrors.push(
             this.createError(rule, ERROR_CODE.ERR_ATTR_NOT_EQUAL, errMsg)
+          );
+        }
+
+        if (matched < (attr.min || 0)) {
+          attrErrors.push(
+            this.createError(
+              rule,
+              ERROR_CODE.ERR_ATTR_NOT_EQUAL,
+              `At least ${attr.min} <${
+                rule.tagName
+              }> tags must have attribute [${attrNm}='${
+                attr.value
+              }']. Need more ${attr.min - matched} <${
+                rule.tagName
+              } ${attrNm}='${attr.value}'> tags.`
+            )
           );
         }
 

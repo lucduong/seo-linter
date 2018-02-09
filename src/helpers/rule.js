@@ -7,7 +7,14 @@
 class TagRule {
   constructor(
     tagName,
-    { parent, required = false, max = -1, min = 0, attrs = {}, childs = [] }
+    {
+      parent = undefined,
+      required = false,
+      max = -1,
+      min = 0,
+      attrs = {},
+      childs = []
+    }
   ) {
     if (!tagName) throw new Error('tagName is required');
     this._tagName = tagName;
