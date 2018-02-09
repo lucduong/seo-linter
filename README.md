@@ -25,13 +25,13 @@ To run SEOLint you need to provide configuration file and either html, uri, file
 Read more about [configuration file](https://github.com/lucduong/seo-linter/#configs):
 
 ```bash
-seolint -c /path/to/config.yml -u https://google.com
+seolinter -c /path/to/config.yml -u https://google.com
 ```
 
 To see the full usage information:
 
 ```bash
-seolint --help
+seolinter --help
 ```
 
 ### Use in your code
