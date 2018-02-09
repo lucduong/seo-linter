@@ -3,6 +3,9 @@
 SEO Lint - The package for linting your HTML file with Google SEO
 
 [![Build Status](https://travis-ci.org/lucduong/seo-lint.svg?branch=master)](https://travis-ci.org/lucduong/seo-lint)
+[![Coverage Status](https://coveralls.io/repos/github/lucduong/seo-lint/badge.svg?branch=master)](https://coveralls.io/github/lucduong/seo-lint?branch=master)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![npm version](https://badge.fury.io/js/seo-linter.svg)](https://badge.fury.io/js/seo-linter)
 
 ## Installation
 
@@ -10,7 +13,7 @@ SEOLinter requires node version 8.9.1 LTS or greater. We highly recommend [nvm](
 Once you have node/npm, you can install/upgrade SEOLinter globally with the following command:
 
 ```bash
-yarn add @lucduong/seo-linter
+yarn add seo-linter
 ```
 
 ## Usage
