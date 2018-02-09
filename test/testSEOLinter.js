@@ -152,7 +152,6 @@ describe('# SEOLinter', () => {
               output: { type: 'console', silence: false }
             })
             .then(errors => {
-              // console.log('>>> ', JSON.stringify(errors));
               expect(errors).to.be.an('array').and.be.empty;
               done();
             })
@@ -472,6 +471,70 @@ describe('# SEOLinter', () => {
           expect(errors[0].message).to.eq(
             `There are 1 <${tagName}> tags without [name] attribute`
           );
+          done();
+        })
+        .catch(err => done(err));
+    });
+
+    it('Should show correct error message if provide rules tag require attribute present with value', done => {
+      const seo = new SEOLinter({
+        rules: {
+          head: {
+            childs: [{ meta: { attrs: { name: { value: 'description' } } } }]
+          }
+        }
+      });
+      const tagName = 'meta';
+      seo
+        .lint({
+          html: `
+                <html>
+                  <head>
+                    <meta name='description'>
+                    <meta name='X'>
+                  </head>
+                </html>
+              `,
+          output: {
+            type: 'console'
+          }
+        })
+        .then(errors => {
+          expect(errors)
+            .to.be.an('array')
+            .and.length(1);
+          done();
+        })
+        .catch(err => done(err));
+    });
+
+    it('Should show correct error message if provide rules tag require attribute present but no element present', done => {
+      const seo = new SEOLinter({
+        rules: {
+          head: {
+            childs: [{ meta: { attrs: { name: { value: 'description' } } } }]
+          }
+        }
+      });
+      const tagName = 'meta';
+      seo
+        .lint({
+          html: `
+                <html>
+                  <head>
+                    <meta name='Y'>
+                    <meta name='X'>
+                  </head>
+                </html>
+              `,
+          output: {
+            type: 'console'
+          }
+        })
+        .then(errors => {
+          expect(errors)
+            .to.be.an('array')
+            .and.length(1);
           done();
         })
         .catch(err => done(err));

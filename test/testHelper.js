@@ -144,12 +144,11 @@ describe('# Helper', () => {
 
     it('Should throw error if not providing `tagName` when creating new instance', done => {
       try {
-        const rule = new TagRule();
+        const rule = new TagRule(null, {});
         done(
           new Error('Not providing `tagName` but still creating new instance.')
         );
       } catch (err) {
-        // console.log(err);
         done();
       }
     });

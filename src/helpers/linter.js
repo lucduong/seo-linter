@@ -25,7 +25,7 @@ class SEOLinter {
    *
    * @param {Object} rules
    */
-  initRules(rules = {}) {
+  initRules(rules) {
     this.rulesMap = {};
     this.tags = Object.keys(rules);
     this.tags.forEach(tagName => {
@@ -34,13 +34,13 @@ class SEOLinter {
         ? this.createTagRules(tagName, rule)
         : [this.createTagRule(tagName, rule)];
 
-      if (this.rulesMap.hasOwnProperty(tagName)) {
+      if (!this.rulesMap.hasOwnProperty(tagName)) {
+        this.rulesMap[tagName] = { rules: tagRules };
+      } else {
         this.rulesMap[tagName]['rules'] = [
           ...this.rulesMap[tagName]['rules'],
           ...tagRules
         ];
-      } else {
-        this.rulesMap[tagName] = { rules: tagRules };
       }
     });
   }
