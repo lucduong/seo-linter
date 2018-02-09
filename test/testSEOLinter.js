@@ -135,7 +135,11 @@ describe('# SEOLinter', () => {
               html: `
                 <html>
                 </html>
-              `
+              `,
+              output: {
+                type: 'console',
+                silence: true
+              }
             })
             .then(errors => {
               expect(errors)

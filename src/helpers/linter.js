@@ -331,7 +331,7 @@ class SEOLinter {
     // If there is any invalid term, the errors size will be greater than 0
     if (this.errors.length === 0) return this.errors;
 
-    return output && !output.silence ? this.errors : this.writeOut(output);
+    return this.writeOut(output);
   }
 
   /**
@@ -341,7 +341,7 @@ class SEOLinter {
    */
   async writeOut(output) {
     if (output) {
-      const { type } = output;
+      const { type, silence } = output;
       let file = null;
       if (['console', 'file'].indexOf(type) === -1)
         throw new Error(
@@ -349,7 +349,7 @@ class SEOLinter {
         );
 
       if (type === 'console') {
-        this.printErrors();
+        if (!silence) this.printErrors();
         return this.errors;
       }
 
