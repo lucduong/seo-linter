@@ -4,8 +4,13 @@ const request = require('request-promise');
 const cheerio = require('cheerio');
 const fs = require('fs');
 const path = require('path');
+const stream = require('stream');
 const yaml = require('js-yaml');
 
+const isReadableStream = obj =>
+  obj instanceof stream.Readable &&
+  typeof (obj._read === 'function') &&
+  typeof (obj._readableState === 'object');
 /**
  * Load yaml config file to javascript object
  *
@@ -24,6 +29,8 @@ exports.loadYamlConfig = (filename, config) => {
   return new Promise((resolve, reject) => {
     try {
       const cfg = yaml.safeLoad(fs.readFileSync(filename, 'utf8'));
+      if (config && !cfg[config])
+        throw new Error(`Config with name '${config}' doesn't exist`);
       return config ? resolve(cfg[config]) : resolve(cfg);
     } catch (err) {
       reject(err);
@@ -71,17 +78,21 @@ exports.loadUrl = url => {
  */
 exports.loadFile = filename => {
   if (!filename) return Promise.reject(new Error('Filename is required'));
-  // TODO: check if filename is readable stream, provide without reading file from path
-  if (!fs.existsSync(filename))
-    return Promise.reject(
-      new Error(`Path provied <${filename}> does not exist`)
-    );
   return new Promise((resolve, reject) => {
-    fs.readFile(filename, (err, html) => {
-      if (err) return reject(err);
-      const $ = cheerio.load(html);
-      return resolve($('html'));
-    });
+    if (typeof filename === 'string') {
+      fs.readFile(filename, (err, html) => {
+        if (err) return reject(err);
+        const $ = cheerio.load(html);
+        return resolve($('html'));
+      });
+    } else if (isReadableStream(filename)) {
+      filename.on('data', html => {
+        const $ = cheerio.load(html);
+        resolve($('html'));
+      });
+    } else {
+      reject(new Error('Filename was provided but invalid'));
+    }
   });
 };
 

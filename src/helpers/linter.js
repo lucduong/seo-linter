@@ -29,19 +29,18 @@ class SEOLinter {
     this.rulesMap = {};
     this.tags = Object.keys(rules);
     this.tags.forEach(tagName => {
+      this.rulesMap[tagName] = { rules: [] };
+    });
+    this.tags.forEach(tagName => {
       const rule = rules[tagName];
       const tagRules = _.isArray(rule)
         ? this.createTagRules(tagName, rule)
         : [this.createTagRule(tagName, rule)];
 
-      if (!this.rulesMap.hasOwnProperty(tagName)) {
-        this.rulesMap[tagName] = { rules: tagRules };
-      } else {
-        this.rulesMap[tagName]['rules'] = [
-          ...this.rulesMap[tagName]['rules'],
-          ...tagRules
-        ];
-      }
+      this.rulesMap[tagName]['rules'] = [
+        ...this.rulesMap[tagName]['rules'],
+        ...tagRules
+      ];
     });
   }
 
@@ -53,7 +52,6 @@ class SEOLinter {
    */
   createTagRule(tagName, cfgRule, parent) {
     if (!tagName) {
-      if (_.isEmpty(cfgRule)) throw new Error('Configuration is invalid');
       tagName = Object.keys(cfgRule)[0];
       cfgRule = cfgRule[tagName];
     }
@@ -85,10 +83,10 @@ class SEOLinter {
   /**
    * Create an error that
    */
-  createError(rule, code, msg) {
+  createError(rule, code, message) {
     return {
       code,
-      message: msg ? msg : `Error from <${rule.tagName}>`,
+      message,
       tagName: rule.tagName
     };
   }

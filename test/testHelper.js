@@ -9,7 +9,8 @@ const {
   TagRule,
   loadFile,
   loadUrl,
-  loadHTML
+  loadHTML,
+  loadYamlConfig
 } = require('../src/helpers');
 
 const sampleHTML = `<!DOCTYPE html><html lang="en">
@@ -48,6 +49,27 @@ describe('# Helper', () => {
             done(new Error('Not providing `filename` but still loading file'));
           })
           .catch(err => done());
+      });
+
+      it('Should throw error if providing error but invalid', done => {
+        loadFile(1)
+          .then(() => {
+            done(new Error('Filename is invalid but still loading'));
+          })
+          .catch(err => done());
+      });
+
+      it('Should load readable stream correctly', done => {
+        const testDir = path.resolve('./', 'test');
+        const htmlFile = path.resolve(testDir, 'ltv.html');
+        const stream = fs.createReadStream(htmlFile, { encoding: 'utf8' });
+        loadFile(stream)
+          .then($ => {
+            const tagName = $.prop('tagName');
+            expect(tagName.toLowerCase()).to.eq('html');
+            done();
+          })
+          .catch(err => done(err));
       });
     });
 

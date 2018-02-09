@@ -29,6 +29,34 @@ describe('# SEOLinter', () => {
         })
         .catch(() => done());
     });
+
+    it('Should use default configuration if not providing filename', done => {
+      loadYamlConfig()
+        .then(cfg => {
+          assert(cfg, 'Should not be null or empty');
+          done();
+        })
+        .catch(err => done(err));
+    });
+
+    it('Should load correct configuration if provide config name', done => {
+      const cfgPath = path.resolve('config.yml');
+      loadYamlConfig(cfgPath, 'rules')
+        .then(cfg => {
+          assert(cfg, 'Should not be null or empty');
+          done();
+        })
+        .catch(err => done(err));
+    });
+
+    it('Should throw error if provide config name but it doesnt exist', done => {
+      const cfgPath = path.resolve('config.yml');
+      loadYamlConfig(cfgPath, 'x')
+        .then(cfg => {
+          done(new Error('Configuration does not exist but still loading'));
+        })
+        .catch(err => done());
+    });
   });
 
   describe('## Linter', () => {
@@ -711,6 +739,41 @@ describe('# SEOLinter', () => {
           expect(errors[0].code).to.eq('TAG001');
           expect(errors[0].message).to.eq(
             `<div> tag required <${tagName}> tag but it doesn't exist`
+          );
+          done();
+        })
+        .catch(err => done(err));
+    });
+
+    it('Should show correct error message if provide rules tag required attribute equals to "LTV" in HTML', done => {
+      const seo = new SEOLinter({
+        rules: {
+          img: { attrs: { alt: { value: 'LTV' } } }
+        }
+      });
+      const tagName = 'img';
+      seo
+        .lint({
+          html: `
+                <html>
+                  <head>
+                  </head>
+                  <body>
+                    <img alt="XXX">
+                  </body>
+                </html>
+              `,
+          output: {
+            type: 'console'
+          }
+        })
+        .then(errors => {
+          expect(errors)
+            .to.be.an('array')
+            .and.length(1);
+          expect(errors[0].code).to.eq('ATTR002');
+          expect(errors[0].message).to.eq(
+            `HTML required <${tagName}> tag present with attribute [alt='LTV'] but no one is valid`
           );
           done();
         })
