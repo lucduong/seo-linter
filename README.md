@@ -1,10 +1,8 @@
 # seo-linter
 
-=========
-
 SEO Lint - The package for linting your HTML file with Google SEO
 
-[![Build Status](https://travis-ci.org/lucduong/seo-linter.svg?branch=master)](https://travis-ci.org/lucduong/seo-linter)
+[![Build Status](https://travis-ci.org/lucduong/seo-lint.svg?branch=master)](https://travis-ci.org/lucduong/seo-lint)
 
 ## Installation
 
