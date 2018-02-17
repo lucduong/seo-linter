@@ -2,7 +2,7 @@
 
 SEO Lint - The package for linting your HTML file with Google SEO
 
-[![Build Status](https://travis-ci.org/lucduong/seo-lint.svg?branch=master)](https://travis-ci.org/lucduong/seo-lint)
+[![Build Status](https://travis-ci.org/lucduong/seo-linter.svg?branch=master)](https://travis-ci.org/lucduong/seo-linter)
 [![Coverage Status](https://coveralls.io/repos/github/lucduong/seo-lint/badge.svg?branch=master)](https://coveralls.io/github/lucduong/seo-lint?branch=master)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![npm version](https://badge.fury.io/js/seo-linter.svg)](https://badge.fury.io/js/seo-linter)
